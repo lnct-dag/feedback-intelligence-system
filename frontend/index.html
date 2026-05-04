@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Intelligence System</title>
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Meta for SEO -->
+    <meta name="description" content="AI-based comment analysis and prioritization system for fast business response.">
+</head>
+
+<body class="bg-dark text-light">
+
+    <div class="container py-5">
+        <header class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-4 mb-5 text-center">
+            <img src="logo.png" alt="LNCT Logo" style="max-height: 120px; object-fit: contain;">
+            <div class="text-center">
+                <h2 class="h5 text-uppercase tracking-widest text-info mb-2">LNCT UNIVERSITY, BHOPAL</h2>
+                <h1 class="display-5 fw-bold gradient-text mb-2 text-nowrap">FEEDBACK INTELLIGENCE SYSTEM</h1>
+                <p class="text-muted lead mb-0">Analyze sentiments, detect abusiveness, and prioritize responses automatically.</p>
+            </div>
+        </header>
+
+        <!-- Stats Overview Section -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="glass-card p-3 text-center stats-card">
+                    <p class="small text-uppercase mb-1 opacity-75">Total Comments</p>
+                    <h3 class="m-0" id="statTotal">0</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card p-3 text-center stats-card border-success">
+                    <p class="small text-uppercase mb-1 text-success">Positive</p>
+                    <h3 class="m-0" id="statPositive">0</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card p-3 text-center stats-card border-danger">
+                    <p class="small text-uppercase mb-1 text-danger">Priority High</p>
+                    <h3 class="m-0" id="statHigh">0</h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="glass-card p-3 text-center stats-card border-info">
+                    <p class="small text-uppercase mb-1 text-info">Avg Sentiment</p>
+                    <h3 class="m-0" id="statAvg">--</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <!-- Input Section with Tabs -->
+            <div class="col-lg-12 mb-5">
+                <div class="glass-card p-4">
+                    <ul class="nav nav-pills justify-content-center mb-4 gap-2" id="inputTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active px-4 fw-bold shadow-sm" id="manual-tab" data-bs-toggle="pill"
+                                data-bs-target="#manual-entry" type="button" role="tab">
+                                <i class="fas fa-keyboard me-2"></i>Manual Entry
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link px-4 fw-bold shadow-sm" id="insta-tab" data-bs-toggle="pill"
+                                data-bs-target="#insta-sync" type="button" role="tab">
+                                <i class="fab fa-instagram me-2"></i>Instagram Sync
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="inputTabsContent">
+                        <!-- Manual Entry Tab -->
+                        <div class="tab-pane fade show active" id="manual-entry" role="tabpanel">
+                            <h2 class="h5 mb-3 text-center">Analyze New Feedback</h2>
+                            <form id="commentForm">
+                                <textarea id="commentInput" class="form-control glass-input mb-3"
+                                    placeholder="Enter comment (e.g., 'The product is great' or 'I need help with login')..."
+                                    required rows="2"></textarea>
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" id="fetchSampleBtn"
+                                        class="btn btn-outline-info px-4 fw-semibold shadow-sm">
+                                        <i class="fas fa-magic me-2"></i>Load Sample
+                                    </button>
+                                    <button type="submit" class="btn btn-primary px-4 fw-semibold shadow-sm">
+                                        <i class="fas fa-search-plus me-2"></i>Analyze & Store
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Instagram Sync Tab -->
+                        <div class="tab-pane fade" id="insta-sync" role="tabpanel">
+                            <h2 class="h5 mb-3 text-center">Fetch & Analyze Instagram Comments</h2>
+                            <p class="text-white small mb-3 text-center">Paste a URL of a public Reel or Post to analyze its recent
+                                comments automatically.</p>
+                            <form id="instaForm">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text bg-transparent border-end-0 text-info">
+                                        <i class="fab fa-instagram"></i>
+                                    </span>
+                                    <input type="text" id="instaUrl" class="form-control glass-input border-start-0"
+                                        placeholder="https://www.instagram.com/contenttype/uniqueurl/?utm_parameter(s) (if any(optional))" required>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-info px-4 fw-bold text-dark shadow-sm">
+                                        <i class="fas fa-sync-alt me-2"></i>Fetch & Analyze
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Management Section -->
+            <div class="col-lg-12">
+                <div class="glass-card p-4">
+                    <div class="d-md-flex justify-content-between align-items-center mb-4">
+                        <h2 class="h5 m-0 mb-3 mb-md-0"><i class="fas fa-chart-pie me-2"></i>Intelligence Dashboard</h2>
+                        <div class="d-flex gap-2">
+                            <button id="exportCsvBtn" class="btn btn-sm btn-outline-light px-3 fw-semibold">
+                                <i class="fas fa-file-export me-2"></i>Export CSV
+                            </button>
+                            <button id="clearAllBtn" class="btn btn-sm btn-outline-danger px-3 fw-semibold">
+                                <i class="fas fa-trash-alt me-2"></i>Clear All
+                            </button>
+                            <button id="settingsBtn" class="btn btn-sm btn-outline-info px-3 fw-semibold"
+                                data-bs-toggle="modal" data-bs-target="#settingsModal">
+                                <i class="fas fa-cog me-2"></i>Settings
+                            </button>
+                            <span class="badge bg-secondary p-2 shadow-sm d-flex align-items-center" id="commentCount">0
+                                Comments</span>
+                        </div>
+                    </div>
+
+                    <!-- Filters Section -->
+                    <div class="row g-3 mb-4 bg-black bg-opacity-25 p-3 rounded-4">
+                        <div class="col-md-4">
+                            <input type="text" id="searchInput" class="form-control form-control-sm glass-input"
+                                placeholder="Search comments...">
+                        </div>
+                        <div class="col-md-3">
+                            <select id="filterSentiment" class="form-select form-select-sm glass-input">
+                                <option value="">All Sentiments</option>
+                                <option value="Positive">Positive</option>
+                                <option value="Neutral">Neutral</option>
+                                <option value="Negative">Negative</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select id="filterPriority" class="form-select form-select-sm glass-input">
+                                <option value="">All Priorities</option>
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-grid">
+                            <button id="resetFilters" class="btn btn-sm btn-secondary">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle custom-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40%">Comment</th>
+                                    <th>User</th>
+                                    <th>Category</th>
+                                    <th>Sentiment</th>
+                                    <th>Priority</th>
+                                    <th>Time</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="commentTableBody">
+                                <!-- Dynamic Content -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-card border-0">
+                <div class="modal-header border-bottom border-white border-opacity-10">
+                    <h5 class="modal-title fw-bold" id="settingsModalLabel"><i
+                            class="fas fa-sliders-h me-2 text-info"></i>System Settings</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="settings-item d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <h6 class="mb-1 fw-bold">Instagram URL Integration</h6>
+                            <p class="small text-white m-0">Enable or disable fetching comments via Instagram URLs.</p>
+                        </div>
+                        <div class="form-check form-switch custom-switch">
+                            <input class="form-check-input" type="checkbox" id="toggleInstaSync" checked>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top border-white border-opacity-10">
+                    <button type="button" class="btn btn-secondary px-4 fw-semibold"
+                        data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="saveSettingsBtn" class="btn btn-primary px-4 fw-semibold"
+                        data-bs-dismiss="modal">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full-Screen Loading Overlay -->
+    <div id="loading" class="loading-overlay d-none">
+        <div class="spinner-container text-center">
+            <div class="spinner-border glow-spinner mb-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <h4 id="loadingText" class="text-white fw-bold text-uppercase mb-4" style="letter-spacing: 2px;">Processing...</h4>
+            
+            <div id="loadingStepsContainer" class="text-start d-flex flex-column gap-2" style="width: 250px; margin: 0 auto; min-height: 140px;">
+                <!-- Animated steps injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- UI/UX Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <footer class="text-center text-light opacity-75 mt-5 mb-5">
+        <div class="mb-3">
+            <p class="mb-1 fw-bold text-info text-uppercase small tracking-wider">Created By:</p>
+            <div class="fw-medium">
+                DIVYANSH AGARWAL (LNCEBTC11079), HEERAL BHADORIA (LNCEBTC11089)
+            </div>
+        </div>
+        <div class="small text-light mt-3">&copy; <span id="currentYear"></span> Feedback Intelligence System | LNCT
+            University, Bhopal</div>
+        <script>document.getElementById('currentYear').textContent = new Date().getFullYear();</script>
+    </footer>
+</body>
+
+</html>

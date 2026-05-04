@@ -1,0 +1,11 @@
+flask
+textblob
+flask-cors
+gunicorn
+instaloader
+emoji
+vaderSentiment
+nltk
+python-dotenv
+browser-cookie3
+instagrapi

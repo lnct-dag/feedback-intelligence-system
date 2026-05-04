@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+venv/
+.vscode/
+.idea/
+database/*.db
+database/*.sqlite3
+node_modules/
+dist/
+build/

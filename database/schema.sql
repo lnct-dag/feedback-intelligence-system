@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_handle TEXT DEFAULT 'Anonymous',
+    comment_text TEXT NOT NULL,
+    sentiment TEXT NOT NULL,
+    priority TEXT NOT NULL,
+    category TEXT DEFAULT 'General',
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS tracked_urls (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    url TEXT UNIQUE NOT NULL,
+    last_sync DATETIME DEFAULT CURRENT_TIMESTAMP
+);
